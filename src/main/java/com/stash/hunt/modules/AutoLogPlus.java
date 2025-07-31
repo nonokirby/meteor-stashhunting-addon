@@ -160,6 +160,23 @@ public class AutoLogPlus extends Module
         .visible(sendWebhook::get)
         .build()
     );
+
+    
+    public final Setting<Boolean> ping = sgGeneral.add(new BoolSetting.Builder()
+        .name("Ping For Stash Finder")
+        .description("Pings you for stash finder and base finder messages")
+        .defaultValue(false)
+        .visible(sendWebhook::get)
+        .build()
+    );
+
+    public final Setting<String> discordId = sgGeneral.add(new StringSetting.Builder()
+        .name("Discord ID")
+        .description("Your discord ID")
+        .defaultValue("")
+        .visible(() -> sendWebhook.get() && ping.get())
+        .build()
+    );
     
     public AutoLogPlus()
     {
