@@ -311,7 +311,7 @@ public class ElytraFlyPlusPlus extends Module {
             {
                 if (speedBps > 20 || tunnelBounce.get())
                 {
-                    ((IVec3d) event.movement).setY(0.0);
+                    ((IVec3d) event.movement).meteor$setY(0.0);
                 }
                 mc.player.setVelocity(mc.player.getVelocity().x, 0.0, mc.player.getVelocity().z);
             }
