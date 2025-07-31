@@ -163,8 +163,8 @@ public class AutoLogPlus extends Module
 
     
     public final Setting<Boolean> ping = sgGeneral.add(new BoolSetting.Builder()
-        .name("Ping For Stash Finder")
-        .description("Pings you for stash finder and base finder messages")
+        .name("Ping On Logout")
+        .description("Pings you when you logout with the reason.")
         .defaultValue(false)
         .visible(sendWebhook::get)
         .build()
@@ -297,7 +297,7 @@ public class AutoLogPlus extends Module
         }
         if (sendWebhook.get() && !webhookLink.get().isEmpty())
         {
-            String message = "[AutoLogPlus] " + reason;
+            String message = Text.literal("[AutoLogPlus] " + reason);
             new Thread(() -> sendWebhook(webhookLink.get(), title, message, ping.get() ? discordId.get() : null, mc.player.getGameProfile().getName())).start();
         }
         if (illegalDisconnect.get())
