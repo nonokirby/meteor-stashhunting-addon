@@ -3,7 +3,7 @@ on:
     push:
         branches:
             - "1.21.4"
-
+            
 env:
     MINECRAFT_VERSION: "1.21.4"
 

@@ -17,6 +17,8 @@ import net.minecraft.text.Text;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 
+import static com.stash.hunt.Utils.sendWebhook;
+
 public class AutoLogPlus extends Module
 {
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
@@ -144,6 +146,38 @@ public class AutoLogPlus extends Module
         .build()
     );
 
+    private final Setting<Boolean> sendWebhook = sgGeneral.add(new BoolSetting.Builder()
+        .name("Send Webhook")
+        .description("Sends a webhook when you logout")
+        .defaultValue(false)
+        .build()
+    );
+
+    public final Setting<String> webhookLink = sgGeneral.add(new StringSetting.Builder()
+        .name("Webhook Link")
+        .description("A discord webhook link. Looks like this: https://discord.com/api/webhooks/webhookUserId/webHookTokenOrSomething")
+        .defaultValue("")
+        .visible(sendWebhook::get)
+        .build()
+    );
+
+    
+    public final Setting<Boolean> ping = sgGeneral.add(new BoolSetting.Builder()
+        .name("Ping For Stash Finder")
+        .description("Pings you for stash finder and base finder messages")
+        .defaultValue(false)
+        .visible(sendWebhook::get)
+        .build()
+    );
+
+    public final Setting<String> discordId = sgGeneral.add(new StringSetting.Builder()
+        .name("Discord ID")
+        .description("Your discord ID")
+        .defaultValue("")
+        .visible(() -> sendWebhook.get() && ping.get())
+        .build()
+    );
+    
     public AutoLogPlus()
     {
         super(Addon.CATEGORY, "auto-log-plus", "Provides some additional triggers to log out.");
@@ -261,7 +295,11 @@ public class AutoLogPlus extends Module
                 Modules.get().get(AutoReconnect.class).toggle();
             }
         }
-
+        if (sendWebhook.get() && !webhookLink.get().isEmpty())
+        {
+            String message = "[AutoLogPlus] " + reason;
+            new Thread(() -> sendWebhook(webhookLink.get(), title, message, ping.get() ? discordId.get() : null, mc.player.getGameProfile().getName())).start();
+        }
         if (illegalDisconnect.get())
         {
             mc.player.networkHandler.sendChatMessage(String.valueOf((char)0));
