@@ -206,7 +206,7 @@ public class DiscordNotifs extends Module
         for (Text sibling : message.getSiblings())
         {
             TextColor color = sibling.getStyle().getColor();
-            if (color != null && color.getRgb() == 11141120)
+            if (color != null && color.getRgb() == 000170170)
             {
                 handleMessage(message.getString(), MessageType.DEATH);
                 return;
