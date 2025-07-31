@@ -146,21 +146,6 @@ public class AutoLogPlus extends Module
         .build()
     );
 
-    private final Setting<Boolean> sendNotifications = sgGeneral.add(new BoolSetting.Builder()
-        .name("notifications")
-        .description("Sends Minecraft notifications when disconnecting")
-        .defaultValue(true)
-        .build()
-    );
-
-    private final Setting<Mode> notificationMode = sgGeneral.add(new EnumSetting.Builder<Mode>()
-        .name("notification-mode")
-        .description("The mode to use for notifications.")
-        .defaultValue(Mode.Both)
-        .visible(sendNotifications::get)
-        .build()
-    );
-
     private final Setting<Boolean> sendWebhook = sgGeneral.add(new BoolSetting.Builder()
         .name("Send Webhook")
         .description("Sends a webhook when you logout")
